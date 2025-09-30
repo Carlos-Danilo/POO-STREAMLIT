@@ -33,10 +33,10 @@ class Horario:
     
     @staticmethod
     def from_json(dic):
-        horario = Horario(dic["id"], datetime.strptime(dic["data"], "%d/%m/%Y%H:%M"))
-        horario.set_confirmado(dic["confirmado"])
-        horario.set_id_cliente(dic["id_cliente"])
-        horario.set_id_servico(dic["id_servico"])
+        horario = Horario(dic.get("id", 0), datetime.strptime(dic["data"], "%d/%m/%Y %H:%M"))
+        horario.set_confirmado(dic.get("confirmado", False))
+        horario.set_id_cliente(dic.get("id_cliente", 0))
+        horario.set_id_servico(dic.get("id_servico", 0))
         return horario
     
 class HorarioDAO:

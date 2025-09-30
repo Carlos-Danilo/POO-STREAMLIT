@@ -1,6 +1,6 @@
 from models.cliente import Cliente, ClienteDAO
 from models.Servico import Servico, ServicoDAO
-from models.horario import Horario, HorarioDAO
+from models.Horario import Horario, HorarioDAO
 
 class View:
     def cliente_listar():
@@ -8,6 +8,8 @@ class View:
     def cliente_inserir(nome, email, fone):
         cliente = Cliente(0, nome, email, fone)
         ClienteDAO.inserir(cliente)
+    def cliente_listar_id(id):
+        return ClienteDAO.listar_id(id)
     def cliente_atualizar(id, nome, email, fone):
         cliente = Cliente(id, nome, email, fone)
         ClienteDAO.atualizar(cliente)
@@ -18,6 +20,8 @@ class View:
     def servico_inserir(descricao, valor):
         servico = Servico(0, descricao, valor)
         ServicoDAO.inserir(servico) 
+    def servico_listar_id(id):
+        return ServicoDAO.listar_id(id)     
     def servico_listar(): 
         return ServicoDAO.listar()
     def servico_atualizar(id, descricao, valor): 
@@ -35,6 +39,8 @@ class View:
         HorarioDAO.inserir(c)
     def horario_listar():
         return HorarioDAO.listar()
+    def horario_listar_id(id):
+        return HorarioDAO.listar_id(id)
     def horario_atualizar(id, data, confirmado, id_cliente, id_servico):
         c = Horario(id, data)
         c.set_confirmado(confirmado)
