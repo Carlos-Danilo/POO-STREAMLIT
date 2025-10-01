@@ -1,6 +1,7 @@
 from models.cliente import Cliente, ClienteDAO
 from models.Servico import Servico, ServicoDAO
 from models.Horario import Horario, HorarioDAO
+from models.profissional import Profissional, ProfissionalDAO
 
 class View:
     def cliente_listar():
@@ -50,4 +51,20 @@ class View:
     def horario_excluir(id):
         c = Horario(id, None)
         HorarioDAO.excluir(c)
+    
+
+    def profissional_inserir(nome, email, telefone, especialidade):
+        p = Profissional(0, nome, email, telefone, especialidade)
+        ProfissionalDAO.inserir(p)
+    def profissional_listar():
+        return ProfissionalDAO.listar()
+    def profissional_listar_id(id):
+        return ProfissionalDAO.listar_id(id)
+    def profissional_atualizar(id, nome, email, telefone, especialidade):
+        p = Profissional(id, nome, email, telefone, especialidade)
+        ProfissionalDAO.atualizar(p)
+    def profissional_excluir(id):
+        p = Profissional(id, "", "", "", "")
+        ProfissionalDAO.excluir(p)
+
     
