@@ -2,7 +2,9 @@ import streamlit as st
 from views import View
 import pandas as pd
 
+
 class ManterProfissionalUI:
+
 
     @staticmethod
     def main():
@@ -12,6 +14,7 @@ class ManterProfissionalUI:
         with tab2: ManterProfissionalUI.inserir()
         with tab3: ManterProfissionalUI.atualizar()
         with tab4: ManterProfissionalUI.excluir()
+
 
     @staticmethod
     def listar():
@@ -23,6 +26,7 @@ class ManterProfissionalUI:
             df = pd.DataFrame(list_dic)
             st.dataframe(df)
 
+
     @staticmethod
     def inserir():
         nome = st.text_input("Informe o nome")
@@ -33,6 +37,7 @@ class ManterProfissionalUI:
             View.profissional_inserir(nome, email, telefone, especialidade)
             st.success("Profissional inserido com sucesso")
             st.rerun()
+
 
     @staticmethod
     def atualizar():
@@ -50,6 +55,7 @@ class ManterProfissionalUI:
                 View.profissional_atualizar(id, nome, email, telefone, especialidade)
                 st.success("Profissional atualizado com sucesso")
                 st.rerun()
+
 
     @staticmethod
     def excluir():

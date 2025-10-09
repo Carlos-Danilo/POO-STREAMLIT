@@ -1,6 +1,7 @@
 from datetime import datetime
 import json
 
+
 class Horario:
     def __init__(self, id, data):
         self.set_id(id)
@@ -9,15 +10,17 @@ class Horario:
         self.set_id_cliente(0)
         self.set_id_servico(0)
 
+
     def __str__(self):
         return f"{self.__id} - {self.__data.strftime('%d/%m/%Y %H:%M')} - {self.__confirmado}"
-        
-    
+       
+   
     def get_id(self): return self.__id
     def get_data(self): return self.__data
     def get_confirmado(self): return self.__confirmado
     def get_id_cliente(self): return self.__id_cliente
     def get_id_servico(self): return self.__id_servico
+
 
     def set_id(self, id): self.__id = id
     def set_data(self, data): self.__data = data
@@ -25,12 +28,13 @@ class Horario:
     def set_id_cliente(self, id_cliente): self.__id_cliente = id_cliente
     def set_id_servico(self, id_servico): self.__id_servico = id_servico
 
+
     def to_json(self):
         dic = {"id":self.__id, "data":self.__data.strftime("%d/%m/%Y %H:%M"),
             "confirmado":self.__confirmado, "id_cliente":self.__id_cliente,
             "id_servico":self.__id_servico}
         return dic
-    
+   
     @staticmethod
     def from_json(dic):
         horario = Horario(dic.get("id", 0), datetime.strptime(dic["data"], "%d/%m/%Y %H:%M"))
@@ -38,10 +42,11 @@ class Horario:
         horario.set_id_cliente(dic.get("id_cliente", 0))
         horario.set_id_servico(dic.get("id_servico", 0))
         return horario
-    
+   
 class HorarioDAO:
     class HorarioDAO:
         __objetos = []
+
 
     @classmethod
     def inserir(cls, obj):
@@ -52,11 +57,12 @@ class HorarioDAO:
         obj.set_id(id + 1)
         cls.__objetos.append(obj)
         cls.salvar()
-    
+   
     @classmethod
     def listar(cls):
         cls.abrir()
         return cls.__objetos
+
 
     @classmethod
     def listar_id(cls, id):
@@ -66,6 +72,7 @@ class HorarioDAO:
                 return obj
         return None
 
+
     @classmethod
     def atualizar(cls, obj):
         aux = cls.listar_id(obj.get_id())
@@ -74,6 +81,7 @@ class HorarioDAO:
             cls.__objetos.append(obj)
             cls.salvar()
 
+
     @classmethod
     def excluir(cls, obj):
         aux = cls.listar_id(obj.get_id())
@@ -81,10 +89,12 @@ class HorarioDAO:
             cls.__objetos.remove(aux)
             cls.salvar()
 
+
     @classmethod
-    
+   
     def abrir(cls):
         cls.__objetos = []
+
 
         try:
             with open("horarios.json", mode="r") as arquivo:
@@ -96,8 +106,13 @@ class HorarioDAO:
             pass
 
 
+
+
     @classmethod
     def salvar(cls):
         with open("horarios.json", mode="w") as arquivo:
             json.dump(cls.__objetos, arquivo, default = Horario.to_json)
+
+
+
 

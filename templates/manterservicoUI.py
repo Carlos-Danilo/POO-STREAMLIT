@@ -2,7 +2,9 @@ import streamlit as st
 from views import View
 import pandas as pd
 
+
 class ManterServicoUI:
+
 
     @staticmethod
     def main():
@@ -13,15 +15,17 @@ class ManterServicoUI:
         with tab3: ManterServicoUI.atualizar()
         with tab4: ManterServicoUI.excluir()
 
+
     @staticmethod
     def listar():
         servicos = View.servico_listar()
-        if len(servicos) == 0: 
+        if len(servicos) == 0:
             st.write("Nenhum Serviço Cadastrado")
         else:
             list_dic = [obj.to_json() for obj in servicos]
             df = pd.DataFrame(list_dic)
             st.dataframe(df)
+
 
     @staticmethod
     def inserir():
@@ -32,10 +36,11 @@ class ManterServicoUI:
             st.success("Serviço inserido com sucesso")
             st.rerun()
 
+
     @staticmethod
     def atualizar():
         servicos = View.servico_listar()
-        if len(servicos) == 0: 
+        if len(servicos) == 0:
             st.write("Nenhum serviço cadastrado")
         else:
             op = st.selectbox("Atualização de Serviços", servicos)
@@ -47,10 +52,11 @@ class ManterServicoUI:
                 st.success("Serviço atualizado com sucesso")
                 st.rerun()
 
+
     @staticmethod
     def excluir():
         servicos = View.servico_listar()
-        if len(servicos) == 0: 
+        if len(servicos) == 0:
             st.write("Nenhum serviço cadastrado")
         else:
             op = st.selectbox("Exclusão de Serviços", servicos)

@@ -4,6 +4,7 @@ from views import View
 import time
 from datetime import datetime
 
+
 class ManterHorarioUI:
     def main():
         st.header("Cadastro de Horários")
@@ -13,6 +14,7 @@ class ManterHorarioUI:
         with tab2: ManterHorarioUI.inserir()
         with tab3: ManterHorarioUI.atualizar()
         with tab4: ManterHorarioUI.excluir()
+
 
     def listar():
         horarios = View.horario_listar()
@@ -29,6 +31,7 @@ class ManterHorarioUI:
                     "serviço": servico})
             df = pd.DataFrame(dic)
             st.dataframe(df)
+
 
     def inserir():
         clientes = View.cliente_listar()
@@ -48,6 +51,7 @@ class ManterHorarioUI:
             View.horario_inserir(datetime.strptime(data, "%d/%m/%Y %H:%M"), confirmado, id_cliente, id_servico)
             st.success("Horário inserido com sucesso")
 
+
     def atualizar():
         horarios = View.horario_listar()
         if len(horarios) == 0:
@@ -61,9 +65,9 @@ class ManterHorarioUI:
             confirmado = st.checkbox("Nova confirmação", op.get_confirmado())
             id_cliente = None if op.get_id_cliente() in [0, None] else op.get_id_cliente()
             id_servico = None if op.get_id_servico() in [0, None] else op.get_id_servico()
-            cliente = st.selectbox("Informe o novo cliente", clientes, next((i for i, 
+            cliente = st.selectbox("Informe o novo cliente", clientes, next((i for i,
                 c in enumerate(clientes) if c.get_id() == id_cliente), None))
-            servico = st.selectbox("Informe o novo serviço", servicos, next((i for i, 
+            servico = st.selectbox("Informe o novo serviço", servicos, next((i for i,
                 s in enumerate(servicos) if s.get_id() == id_servico), None))
             if st.button("Atualizar"):
                 id_cliente = None
@@ -77,6 +81,7 @@ class ManterHorarioUI:
                 confirmado, id_cliente, id_servico)
             st.success("Horário atualizado com sucesso")
 
+
     def excluir():
         horarios = View.horario_listar()
         if len (horarios) == 0: st.write("Nenhum horário cadastrado")
@@ -87,5 +92,4 @@ class ManterHorarioUI:
                 st.success("Horário excluído com sucesso")
                 time.sleep(2)
                 st.rerun()
-    
-    
+   

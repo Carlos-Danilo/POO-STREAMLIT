@@ -1,5 +1,6 @@
 import json
 
+
 class Profissional:
     def __init__(self, id, nome, email, telefone, especialidade):
         self.set_id(id)
@@ -8,24 +9,28 @@ class Profissional:
         self.set_telefone(telefone)
         self.set_especialidade(especialidade)
 
+
     def __str__(self):
         return f"{self.__id} - {self.__nome} ({self.__especialidade})"
 
-    # GETTERS
+
+   
     def get_id(self): return self.__id
     def get_nome(self): return self.__nome
     def get_email(self): return self.__email
     def get_telefone(self): return self.__telefone
     def get_especialidade(self): return self.__especialidade
 
-    # SETTERS
+
+   
     def set_id(self, id): self.__id = id
     def set_nome(self, nome): self.__nome = nome
     def set_email(self, email): self.__email = email
     def set_telefone(self, telefone): self.__telefone = telefone
     def set_especialidade(self, especialidade): self.__especialidade = especialidade
 
-    # JSON
+
+ 
     def to_json(self):
         dic = {
             "id": self.__id,
@@ -36,14 +41,18 @@ class Profissional:
         }
         return dic
 
+
     @staticmethod
     def from_json(dic):
         return Profissional(dic.get("id", 0), dic.get("nome", ""), dic.get("email", ""),
                             dic.get("telefone", ""), dic.get("especialidade", ""))
 
 
+
+
 class ProfissionalDAO:
     __objetos = []
+
 
     @classmethod
     def inserir(cls, obj):
@@ -55,10 +64,12 @@ class ProfissionalDAO:
         cls.__objetos.append(obj)
         cls.salvar()
 
+
     @classmethod
     def listar(cls):
         cls.abrir()
         return cls.__objetos
+
 
     @classmethod
     def listar_id(cls, id):
@@ -68,6 +79,7 @@ class ProfissionalDAO:
                 return obj
         return None
 
+
     @classmethod
     def atualizar(cls, obj):
         aux = cls.listar_id(obj.get_id())
@@ -76,12 +88,14 @@ class ProfissionalDAO:
             cls.__objetos.append(obj)
             cls.salvar()
 
+
     @classmethod
     def excluir(cls, obj):
         aux = cls.listar_id(obj.get_id())
         if aux != None:
             cls.__objetos.remove(aux)
             cls.salvar()
+
 
     @classmethod
     def abrir(cls):
@@ -95,7 +109,10 @@ class ProfissionalDAO:
         except FileNotFoundError:
             pass
 
+
     @classmethod
     def salvar(cls):
         with open("profissionais.json", mode="w") as arquivo:
             json.dump(cls.__objetos, arquivo, default=Profissional.to_json)
+
+
