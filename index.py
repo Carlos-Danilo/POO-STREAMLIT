@@ -9,6 +9,7 @@ from templates.loginUI_P import LoginUI_P
 from templates.perfilclienteUI import PerfilClienteUI
 from templates.perfilprofissionalUI import PerfilProfissionalUI
 from views import View
+from templates.agendarservicoUI import AgendarServicoUI
 
 class IndexUI:
     def main():
@@ -19,12 +20,19 @@ class IndexUI:
         if op == "Entrar no Sistema": LoginUI.main()
         if op == "Entrar no Sistema de profissionais": LoginUI_P.main()
         if op == "Abrir Conta": AbrirContaUI.main()
+
+
     def menu_cliente():
-        op = st.sidebar.selectbox("Menu", ["Meus Dados"])
+        op = st.sidebar.selectbox("Menu", ["Meus Dados", "Agendar Serviço"])
         if op == "Meus Dados": PerfilClienteUI.main()
+        if op == "Agendar Serviço": AgendarServicoUI.main()
+
+
     def menu_profissional():
         op = st.sidebar.selectbox("Menu", ["Meus Dados"])
         if op == "Meus Dados": PerfilProfissionalUI.main()
+
+
     def menu_admin(): 
         op = st.sidebar.selectbox("Menu", ["Cadastro de Clientes", 
                                             "Cadastro de Serviços", 
