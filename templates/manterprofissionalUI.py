@@ -1,71 +1,63 @@
 import streamlit as st
-from views import View
 import pandas as pd
-
+from views import View
+import time
 
 class ManterProfissionalUI:
-
-
-    @staticmethod
     def main():
-        st.header("Cadastro de Profissionais")
+        st.header("Cadastro de profissionais")
         tab1, tab2, tab3, tab4 = st.tabs(["Listar", "Inserir", "Atualizar", "Excluir"])
         with tab1: ManterProfissionalUI.listar()
         with tab2: ManterProfissionalUI.inserir()
         with tab3: ManterProfissionalUI.atualizar()
         with tab4: ManterProfissionalUI.excluir()
 
-
-    @staticmethod
     def listar():
         profissionais = View.profissional_listar()
-        if len(profissionais) == 0:
-            st.write("Nenhum profissional cadastrado")
+        if len(profissionais) == 0: st.write("Nenhum profissional cadastrado")
         else:
-            list_dic = [obj.to_json() for obj in profissionais]
+            list_dic = []
+            for obj in profissionais: list_dic.append(obj.to_json())
             df = pd.DataFrame(list_dic)
-            st.dataframe(df)
+            st.dataframe(df, hide_index=True)
 
-
-    @staticmethod
     def inserir():
         nome = st.text_input("Informe o nome")
-        email = st.text_input("Informe o email")
-        telefone = st.text_input("Informe o telefone")
         especialidade = st.text_input("Informe a especialidade")
+        conselho = st.text_input("Informe o conselho")
+        email = st.text_input("Informe o email")
+        senha = st.text_input("Informe a senha", type="password")
         if st.button("Inserir"):
-            View.profissional_inserir(nome, email, telefone, especialidade)
+            View.profissional_inserir(nome, especialidade, conselho, email, senha)
             st.success("Profissional inserido com sucesso")
+            time.sleep(2)
             st.rerun()
 
-
-    @staticmethod
     def atualizar():
         profissionais = View.profissional_listar()
-        if len(profissionais) == 0:
-            st.write("Nenhum profissional cadastrado")
+        if len(profissionais) == 0: st.write("Nenhum profissional cadastrado")
         else:
-            op = st.selectbox("Atuaização de Profissionais", profissionais)
-            nome = st.text_input("Novo nome", op.get_nome())
-            email = st.text_input("Novo email", op.get_email())
-            telefone = st.text_input("Novo telefone", op.get_telefone())
-            especialidade = st.text_input("Nova especialidade", op.get_especialidade())
+            op = st.selectbox("Atualização de profissionais", profissionais)
+            nome = st.text_input("Informe o novo nome", op.get_nome())
+            especialidade = st.text_input("Informe a nova especialidade", op.get_especialidade())
+            conselho = st.text_input("Informe o novo conselho", op.get_conselho())
+            email = st.text_input("Informe o novo email", op.get_email())
+            senha = st.text_input("Informe a nova senha", op.get_senha(), type="password")
             if st.button("Atualizar"):
                 id = op.get_id()
-                View.profissional_atualizar(id, nome, email, telefone, especialidade)
+                View.profissional_atualizar(id, nome, especialidade, conselho, email, senha)
                 st.success("Profissional atualizado com sucesso")
+                time.sleep(2)
                 st.rerun()
 
-
-    @staticmethod
     def excluir():
         profissionais = View.profissional_listar()
-        if len(profissionais) == 0:
-            st.write("Nenhum profissonal cadastrado")
+        if len(profissionais) == 0: st.write("Nenhum profissional cadastrado")
         else:
-            op = st.selectbox("exclusão de Profissionais", profissionais)
+            op = st.selectbox("Exclusão de profissionais", profissionais)
             if st.button("Excluir"):
                 id = op.get_id()
                 View.profissional_excluir(id)
-                st.success("profissional excluído com sucesso")
+                st.success("Profissional excluído com sucesso")
+                time.sleep(2)
                 st.rerun()
