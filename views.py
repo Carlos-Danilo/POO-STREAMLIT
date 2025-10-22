@@ -11,11 +11,8 @@ class View:
         ClienteDAO.inserir(cliente)
 
     def cliente_listar():
-        r = ClienteDAO.listar()
-        r.sort(key = lambda obj : obj.get_nome())
-        return r
-    
-
+        return ClienteDAO.listar()
+  
     def cliente_listar_id(id):
         return ClienteDAO.listar_id(id)
 
@@ -44,9 +41,7 @@ class View:
         ProfissionalDAO.inserir(profissional)
 
     def profissional_listar():
-        r = ProfissionalDAO.listar()
-        r.sort(key = lambda obj : obj.get_nome())
-        return r
+        return ProfissionalDAO.listar()
   
     def profissional_listar_id(id):
         return ProfissionalDAO.listar_id(id)
@@ -66,9 +61,7 @@ class View:
         return None
 
     def servico_listar():
-        r = ServicoDAO.listar()
-        r.sort(key = lambda obj : obj.get_descricao())
-        return r
+        return ServicoDAO.listar()
     
     def servico_listar_id(id):
         return ServicoDAO.listar_id(id)
@@ -94,9 +87,7 @@ class View:
         HorarioDAO.inserir(c)
 
     def horario_listar():
-        r = HorarioDAO.listar()
-        r.sort(key = lambda obj : obj.get_data())
-        return r
+        return HorarioDAO.listar()
 
     def horario_atualizar(id, data, confirmado, id_cliente, id_servico, id_profissional):
         c = Horario(id, data)
@@ -106,30 +97,14 @@ class View:
         c.set_id_profissional(id_profissional)
         HorarioDAO.atualizar(c)
 
-    def horario_filtrar_profissional(id_profissional):
-        r= []
-        for h in View.horario_listar():
-            if h.get_id_profissional() == id_profissional:
-               r.append(h)
-            return r
-    
-    from datetime import datetime
-
+    def horario_excluir(id):
+        c = Horario(id, None)
+        HorarioDAO.excluir(c)
     def horario_agendar_horario(id_profissional):
         r = []
         agora = datetime.now()
         for h in View.horario_listar():
-            if (
-                h.get_data() >= agora and
-                not h.get_confirmado() and
-                h.get_id_cliente() is None and
-                h.get_id_profissional() == id_profissional
-            ):
+            if h.get_data() >= agora and h.get_confirmado() == False and h.get_id_cliente() == None and h.get_id_profissional() == id_profissional:
                 r.append(h)
-
-        r.sort(key=lambda h: h.get_data())
+        r.sort(key = lambda h : h.get_data()) 
         return r
-
-    def horario_excluir(id):
-        c = Horario(id, None)
-        HorarioDAO.excluir(c)
