@@ -53,7 +53,8 @@ class Servico:
             return Servico(id, descricao, valor)
         except (KeyError, ValueError) as e:
             raise ValueError(f"Erro ao criar objeto Servico: {e}")
-
+    def __str__(self):
+        return f"{self.__descricao} - R$ {self.__valor:.2f}"
 
 
 class ServicoDAO:
@@ -97,6 +98,7 @@ class ServicoDAO:
         if aux != None:
             cls.__objetos.remove(aux)
             cls.salvar()
+    
 
     @classmethod
     def abrir(cls):

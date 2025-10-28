@@ -49,7 +49,6 @@ class View:
         for obj in View.profissional_listar():
             if obj.get_email() == email:
                 raise ValueError("email já cadastrado em outro profissional, escolha outro")
-            # não é preciso verificar se o email é "admin", pois são formularios diferentes
         profissional = Profissional(0, nome, especialidade, conselho, email, senha)
         ProfissionalDAO.inserir(profissional)
 
@@ -105,8 +104,12 @@ class View:
         for obj in View.horario_listar():
             if obj.get_id_servico() == id:
                 raise ValueError("Serviço já agendado: não é possível excluir")
-        c = Servico(id, "sem descrição", 0)
-        ServicoDAO.excluir(c)
+        
+        servico = ServicoDAO.listar_id(id)
+        if servico is None:
+            raise ValueError("Serviço não encontrado.")
+        
+        ServicoDAO.excluir(servico)
 
 
     def horario_inserir(data, confirmado, id_cliente, id_servico, id_profissional):

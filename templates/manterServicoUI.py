@@ -35,8 +35,7 @@ class ManterServicoUI:
         descricao = st.text_input("Informe a descrição")
         valor = st.text_input("Informe o valor (R$)")
         duracao = st.text_input("Informe a duração (minutos)")
-
-        # Verifica se todos os campos estão preenchidos antes de tentar inserir
+        
         if st.button("Inserir"):
             if not descricao or not valor or not duracao:
                 st.error("Todos os campos devem ser preenchidos")
@@ -77,7 +76,7 @@ class ManterServicoUI:
                     st.error(f"Erro: {erro}")
 
                 time.sleep(2)
-                st.experimental_rerun()
+                st.rerun()
 
     @staticmethod
     def excluir():
