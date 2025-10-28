@@ -8,8 +8,13 @@ class View:
 
     def cliente_inserir(nome, email, fone, senha):
         for obj in View.cliente_listar():
-            if obj.get_email() == email or email=="admin":
+            if obj.get_email() == email:
                 raise ValueError("Email já foi cadastrado por outro cliente")
+        for obj in View.profissional_listar():
+            if obj.get_email() == email:
+                raise ValueError("Email já foi cadastrado por um profissional")
+        if email == "admin":
+            raise ValueError("O e-mail 'admin' é reservado ao administrador")
         cliente = Cliente(0, nome, email, fone, senha)
         ClienteDAO.inserir(cliente)
 
@@ -20,9 +25,14 @@ class View:
         return ClienteDAO.listar_id(id)
 
     def cliente_atualizar(id, nome, email, fone, senha):
-        for obj in View.cliente_listar():   
+        for obj in View.cliente_listar():
             if obj.get_id() != id and obj.get_email() == email:
-                raise ValueError("email já cadastrado em outro cliente, escolha outro")
+                raise ValueError("Email já cadastrado em outro cliente, escolha outro")
+        for obj in View.profissional_listar():
+            if obj.get_email() == email:
+                raise ValueError("Email já cadastrado em um profissional, escolha outro")
+        if email == "admin":
+            raise ValueError("O e-mail 'admin' é reservado ao administrador")
         cliente = Cliente(id, nome, email, fone, senha)
         ClienteDAO.atualizar(cliente)
     

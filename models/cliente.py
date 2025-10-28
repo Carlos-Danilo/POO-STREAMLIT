@@ -14,11 +14,24 @@ class Cliente:
     def get_fone(self): return self.__fone
     def get_senha(self): return self.__senha
 
-    def set_senha(self, senha): self.__senha = senha
-    def set_id(self, id): self.__id = id
-    def set_nome(self, nome): self.__nome = nome
-    def set_email(self, email): self.__email = email
     def set_fone(self, fone): self.__fone = fone
+    def set_id(self, id): self.__id = id
+    
+    def set_nome(self, nome):
+        if nome is None or nome.strip() == "":
+            raise ValueError("O nome do cliente não pode estar vazio.")
+        self.__nome = nome
+        
+    def set_email(self, email):
+        if email is None or email.strip() == "":
+            raise ValueError("O e-mail do cliente não pode estar vazio.")
+        self.__email = email
+        
+    def set_senha(self, senha):
+        if senha is None or senha.strip() == "":
+            raise ValueError("A senha do cliente não pode estar vazia.")
+        self.__senha = senha
+   
 
     def to_json(self):
         dic = {"id":self.__id, "nome":self.__nome, "email":self.__email,"fone":self.__fone, "senha":self.__senha}
