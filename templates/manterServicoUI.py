@@ -3,9 +3,9 @@ import pandas as pd
 import time
 from views import View
 
-
 class ManterServicoUI:
 
+    @staticmethod
     def main():
         st.header("Cadastro de Serviços")
         tab1, tab2, tab3, tab4 = st.tabs(["Listar", "Inserir", "Atualizar", "Excluir"])
@@ -14,6 +14,7 @@ class ManterServicoUI:
         with tab3: ManterServicoUI.atualizar()
         with tab4: ManterServicoUI.excluir()
 
+    @staticmethod
     def listar():
         servicos = View.servico_listar()
         if len(servicos) == 0:
@@ -29,41 +30,70 @@ class ManterServicoUI:
             df = pd.DataFrame(dic)
             st.dataframe(df, hide_index=True)
 
+    @staticmethod
     def inserir():
-        descricao = st.text_input("Descrição do serviço")
-        valor = st.number_input("Valor do serviço", min_value=0.0, step=0.1)
+        descricao = st.text_input("Informe a descrição")
+        valor = st.text_input("Informe o valor (R$)")
+        duracao = st.text_input("Informe a duração (minutos)")
 
+        # Verifica se todos os campos estão preenchidos antes de tentar inserir
         if st.button("Inserir"):
-            View.servico_inserir(descricao, valor)
-            st.success("Serviço inserido com sucesso")
+            if not descricao or not valor or not duracao:
+                st.error("Todos os campos devem ser preenchidos")
+                return
+
+            try:
+                valor = float(valor)
+                duracao = int(duracao)
+                if valor <= 0:
+                    st.error("O valor do serviço deve ser maior que zero.")
+                    return
+                if duracao <= 0:
+                    st.error("A duração do serviço deve ser maior que zero.")
+                    return
+                View.servico_inserir(descricao, valor)
+                st.success("Serviço inserido com sucesso!")
+            except ValueError as erro:
+                st.error(f"Erro: {erro}")
             time.sleep(2)
             st.rerun()
 
+    @staticmethod
     def atualizar():
         servicos = View.servico_listar()
         if len(servicos) == 0:
             st.write("Nenhum serviço cadastrado")
         else:
-            op = st.selectbox("Atualização de Serviços", servicos)
+            op = st.selectbox("Escolha um serviço para atualizar", servicos)
             descricao = st.text_input("Nova descrição", op.get_descricao())
-            valor = st.number_input("Novo valor", value=op.get_valor())
+            valor = st.number_input("Novo valor", value=op.get_valor(), min_value=0.1)
 
             if st.button("Atualizar"):
-                id = op.get_id()
-                View.servico_atualizar(id, descricao, valor)
-                st.success("Serviço atualizado com sucesso")
-                st.rerun()
+                try:
+                    id = op.get_id()
+                    View.servico_atualizar(id, descricao, float(valor))
+                    st.success("Serviço atualizado com sucesso")
+                except ValueError as erro:
+                    st.error(f"Erro: {erro}")
 
+                time.sleep(2)
+                st.experimental_rerun()
+
+    @staticmethod
     def excluir():
         servicos = View.servico_listar()
         if len(servicos) == 0:
             st.write("Nenhum serviço cadastrado")
         else:
-            op = st.selectbox("Exclusão de Serviços", servicos)
+            op = st.selectbox("Escolha um serviço para excluir", servicos)
 
             if st.button("Excluir"):
-                id = op.get_id()
-                View.servico_excluir(id)
-                st.success("Serviço excluído com sucesso")
+                try:
+                    id = op.get_id()
+                    View.servico_excluir(id)
+                    st.success("Serviço excluído com sucesso")
+                except ValueError as erro:
+                    st.error(f"Erro: {erro}")
+
                 time.sleep(2)
                 st.rerun()
