@@ -23,7 +23,12 @@ class Horario:
 
    
     def set_id(self, id): self.__id = id
-    def set_data(self, data): self.__data = data
+    def set_data(self, data):
+        if not isinstance(data, datetime):
+            raise ValueError("Data inválida")
+        if data.year < 2025:
+            raise ValueError("Data anterior ao ano de 2025 não é permitida")
+        self.__data = data
     def set_confirmado(self, confirmado): self.__confirmado = confirmado
     def set_id_cliente(self, id_cliente): self.__id_cliente = id_cliente
     def set_id_servico(self, id_servico): self.__id_servico = id_servico
@@ -44,11 +49,12 @@ class Horario:
     @staticmethod
     def from_json(dic):
         horario = Horario(dic["id"], datetime.strptime(dic["data"], "%d/%m/%Y %H:%M"))
-        horario.set_confirmado(dic.get("confirmado", False))
-        horario.set_id_cliente(dic.get("id_cliente", 0))
-        horario.set_id_servico(dic.get("id_servico", 0))
-        horario.set_id_profissional(dic.get("id_profissional", 0))
+        horario.set_confirmado(dic["confirmado"])
+        horario.set_id_cliente(dic["id_cliente"])
+        horario.set_id_servico(dic["id_servico"])
+        horario.set_id_profissional(dic["id_profissional"])
         return horario
+
 
 
 class HorarioDAO:

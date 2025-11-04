@@ -50,10 +50,10 @@ class GerenciarAgendaUI:
             st.warning("Nenhum profissional logado.")
             return
 
-        data = st.date_input("Informe o dia do atendimento", date.today())
-        hora_inicial = st.time_input("Hora inicial do atendimento")
-        hora_final = st.time_input("Hora final do atendimento")
-        intervalo = st.number_input("Intervalo entre atendimentos (em minutos)", min_value=5, step=5)
+        data = st.date_input("Dia do atendimento", date.today())
+        hora_inicial = st.time_input("Horario inicial do atendimento")
+        hora_final = st.time_input("Horario final do atendimento")
+        intervalo = st.number_input("Intervalo de atendimentos (min)", min_value=5, step=5)
 
         if st.button("Gerar horários"):
             from datetime import datetime, timedelta

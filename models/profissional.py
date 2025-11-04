@@ -17,15 +17,24 @@ class Profissional:
     def get_senha(self): return self.__senha
 
     def set_id(self, id): self.__id = id
-    def set_nome(self, nome): self.__nome = nome
+    def set_nome(self, nome):
+        if nome == "": 
+            raise ValueError("Nome não pode ser vazio")
+        self.__nome = nome
     def set_especialidade(self, especialidade): self.__especialidade = especialidade
     def set_conselho(self, conselho): self.__conselho = conselho
-    def set_email(self, email): self.__email = email
-    def set_senha(self, senha): self.__senha = senha
+    def set_email(self, email):
+        if email == "": 
+            raise ValueError("E-mail não pode ser vazio")
+        self.__email = email
+        
+    def set_senha(self, senha):
+        if senha == "": 
+            raise ValueError("Senha não pode estar vazia")
+        self.__senha = senha
     def to_json(self):
         dic = {"id":self.__id, "nome":self.__nome, "especialidade":self.__especialidade, "conselho":self.__conselho, "email":self.__email, "senha":self.__senha}
         return dic
-    
     @staticmethod
     def from_json(dic):
         return Profissional(dic["id"], dic["nome"], dic["especialidade"], dic["conselho"], dic["email"], dic["senha"])
