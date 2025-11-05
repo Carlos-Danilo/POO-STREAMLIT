@@ -1,4 +1,5 @@
 import json
+from models.dao import DAO
 
 class Cliente:
     def __init__(self, id, nome, email, fone, senha):
@@ -14,87 +15,56 @@ class Cliente:
     def get_fone(self): return self.__fone
     def get_senha(self): return self.__senha
 
-    def set_fone(self, fone): self.__fone = fone
     def set_id(self, id): self.__id = id
-    
     def set_nome(self, nome):
-        if nome is None or nome.strip() == "":
+        if not nome or nome.strip() == "":
             raise ValueError("O nome do cliente não pode estar vazio.")
         self.__nome = nome
-        
+
     def set_email(self, email):
-        if email is None or email.strip() == "":
+        if not email or email.strip() == "":
             raise ValueError("O e-mail do cliente não pode estar vazio.")
         self.__email = email
-        
+
+    def set_fone(self, fone):
+        self.__fone = fone
+
     def set_senha(self, senha):
-        if senha is None or senha.strip() == "":
+        if not senha or senha.strip() == "":
             raise ValueError("A senha do cliente não pode estar vazia.")
         self.__senha = senha
-   
 
     def to_json(self):
-        dic = {"id":self.__id, "nome":self.__nome, "email":self.__email,"fone":self.__fone, "senha":self.__senha}
-        return dic
+        return {
+            "id": self.__id,
+            "nome": self.__nome,
+            "email": self.__email,
+            "fone": self.__fone,
+            "senha": self.__senha
+        }
+
     @staticmethod
     def from_json(dic):
-        return Cliente(dic["id"], dic["nome"], dic["email"], dic["fone"],dic["senha"])
+        return Cliente(dic["id"], dic["nome"], dic["email"], dic["fone"], dic["senha"])
+
     def __str__(self):
         return f"{self.__id} - {self.__nome} - {self.__email} - {self.__fone}"
 
-class ClienteDAO:
-    __objetos = []
 
-    @classmethod
-    def inserir(cls, obj):
-        cls.abrir()
-        id = 0
-        for aux in cls.__objetos:
-            if aux.get_id() > id: id = aux.get_id()
-        obj.set_id(id + 1)
-        cls.__objetos.append(obj)
-        cls.salvar()
-
-    @classmethod
-    def listar(cls):
-        cls.abrir()
-        return cls.__objetos
-
-    @classmethod
-    def listar_id(cls, id):
-        cls.abrir()
-        for obj in cls.__objetos: 
-            if obj.get_id() == id: return obj
-        return None
-
-    @classmethod
-    def atualizar(cls, obj):
-        aux = cls.listar_id(obj.get_id())
-        if aux != None:
-            cls.__objetos.remove(aux)
-            cls.__objetos.append(obj)
-            cls.salvar()
-
-    @classmethod
-    def excluir(cls, obj):
-        aux = cls.listar_id(obj.get_id())
-        if aux != None:
-            cls.__objetos.remove(aux)
-            cls.salvar()
-
+class ClienteDAO(DAO):
     @classmethod
     def abrir(cls):
-        cls.__objetos = []
+        cls._objetos = []
         try:
-            with open("clientes.json", mode="r") as arquivo:
-                list_dic = json.load(arquivo)
-                for dic in list_dic:
+            with open("clientes.json", "r") as arquivo:
+                lista = json.load(arquivo)
+                for dic in lista:
                     obj = Cliente.from_json(dic)
-                    cls.__objetos.append(obj)
+                    cls._objetos.append(obj)
         except FileNotFoundError:
-            pass
+            cls._objetos = []
 
     @classmethod
     def salvar(cls):
-        with open("clientes.json", mode="w") as arquivo:
-            json.dump(cls.__objetos, arquivo, default = Cliente.to_json)  
+        with open("clientes.json", "w") as arquivo:
+            json.dump(cls._objetos, arquivo, default=Cliente.to_json)

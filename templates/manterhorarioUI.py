@@ -40,21 +40,32 @@ class ManterHorarioUI:
     def inserir():
         clientes = View.cliente_listar()
         servicos = View.servico_listar()
-        profissional = View.profissional_listar()
+        profissionais = View.profissional_listar()  # renomeado para não confundir
         data = st.text_input("Informe a data e horário do serviço", datetime.now().strftime("%d/%m/%Y %H:%M"))
         confirmado = st.checkbox("Confirmado")
-        cliente = st.selectbox("Informe o cliente", clientes, index = None)
-        profissional = st.selectbox("Informe o profissional", profissional, index = None)
-        servico = st.selectbox("Informe o serviço", servicos, index = None)
+        cliente = st.selectbox("Informe o cliente", clientes, index=None)
+        profissional = st.selectbox("Informe o profissional", profissionais, index=None)
+        servico = st.selectbox("Informe o serviço", servicos, index=None)
 
         if st.button("Inserir"):
             try:
                 id_cliente = None
+                id_profissional = None
                 id_servico = None
-                if cliente != None: id_cliente = cliente.get_id()
-                if profissional != None: id_profissional = profissional.get_id()
-                if servico != None: id_servico = servico.get_id()
-                View.horario_inserir(datetime.strptime(data, "%d/%m/%Y %H:%M"), confirmado, id_cliente, id_servico, id_profissional)
+
+                if cliente is not None:
+                    id_cliente = cliente.get_id()
+                if profissional is not None:
+                    id_profissional = profissional.get_id()
+                if servico is not None:
+                    id_servico = servico.get_id()
+                View.horario_inserir(
+                    datetime.strptime(data, "%d/%m/%Y %H:%M"),
+                    confirmado,
+                    id_cliente,
+                    id_servico,
+                    id_profissional
+                )
                 st.success("Horário inserido com sucesso")
             except ValueError as erro:
                 st.error(erro)
